@@ -1,0 +1,60 @@
+﻿@model IEnumerable<NET_projekt.Models.User>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nickname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmailAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PremiumStatus)
+        </th>
+        <th>
+            Datasets
+        </th>
+        <th>
+            Example points in their datasets
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var user in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => user.Nickname)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => user.EmailAddress)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => user.PremiumStatus)
+    </td>
+    <td>
+        @foreach (var item in user.EcgCollection)
+        {
+            @item.DatasetName
+            <strong>    </strong>
+        }
+    </td>
+    <td>
+        @foreach (var item in user.EcgCollection)
+        {
+            foreach (var dp in item.EcgPointsCollection)
+            {
+                @dp.Point
+                <strong>    </strong>
+            }
+        }
+    </td>
+</tr>
+    }
+</table>

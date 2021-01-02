@@ -15,7 +15,5 @@ namespace NET_projekt.Models
         public DbSet<User> Users { get; set; }
         public DbSet<EcgDataset> EcgDatasets { get; set; }
         public DbSet<EmgDataset> EmgDatasets { get; set; }
-        public DbSet<EcgDataPoint> EcgDataPoints { get; set; }
-        public DbSet<EmgDataPoint> EmgDataPoints { get; set; }
     }
 }

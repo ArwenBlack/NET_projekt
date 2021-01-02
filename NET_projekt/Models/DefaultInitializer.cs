@@ -6,71 +6,62 @@ using System.Web;
 
 namespace NET_projekt.Models
 {
-    public class DefaultInitializer : DropCreateDatabaseIfModelChanges<DefaultContext>
+    public class DefaultInitializer : DropCreateDatabaseAlways<DefaultContext>
     {
         User TestUser1, TestUser2;
         EcgDataset Dataset1, Dataset2, Dataset3;
         EmgDataset Dataset4, Dataset5, Dataset6;
-        EcgDataPoint EcgPoint1, EcgPoint2;
         protected override void Seed(DefaultContext context)
         {
-            var tableNames = context.Database.SqlQuery<string>("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME NOT LIKE '%Migration%'").ToList();
-            foreach (var tableName in tableNames)
-            {
-                context.Database.ExecuteSqlCommand(string.Format("DELETE FROM {0}", tableName));
-            }
-            context.SaveChanges();
             TestUser1 = new User
             {
-                Nickname = "Janusz123",
+                Nickname = "Janusz12345",
                 EmailAddress = "januszex@wp.pl",
+                Password = "541c57960bb997942655d14e3b9607f9", //hej
                 PremiumStatus = true
             };
             TestUser2 = new User
             {
                 Nickname = "Magik90",
                 EmailAddress = "maggik012@wp.pl",
+                Password = "541c57960bb997942655d14e3b9607f9", //hej
                 PremiumStatus = true
             };
             Dataset1 = new EcgDataset
             {
                 ConcreteUser = TestUser1,
-                DatasetName = "t1"
+                DatasetName = "t1",
+                GoogleReference = "refDELETEME"
             };
             Dataset2 = new EcgDataset
             {
                 ConcreteUser = TestUser1,
-                DatasetName = "t2"
+                DatasetName = "t2",
+                GoogleReference = "refDELETEME"
             };
             Dataset3 = new EcgDataset
             {
                 ConcreteUser = TestUser2,
-                DatasetName = "t3"
+                DatasetName = "t3",
+                GoogleReference = "refDELETEME"
             };
             Dataset4 = new EmgDataset
             {
                 ConcreteUser = TestUser1,
-                DatasetName = "EMGT1-U1"
+                DatasetName = "EMGT1-U1",
+                GoogleReference = "refDELETEME"
             };
             Dataset5 = new EmgDataset
             {
                 ConcreteUser = TestUser2,
-                DatasetName = "EMGT2-U2"
+                DatasetName = "EMGT2-U2",
+                GoogleReference = "refDELETEME"
             };
             Dataset6 = new EmgDataset
             {
                 ConcreteUser = TestUser2,
-                DatasetName = "EMGT3-U2"
-            };
-            EcgPoint1 = new EcgDataPoint
-            {
-                ConcreteDataset = Dataset1,
-                Point = 0.0123
-            };
-            EcgPoint2 = new EcgDataPoint
-            {
-                ConcreteDataset = Dataset1,
-                Point = 0.0129
+                DatasetName = "EMGT3-U2",
+                GoogleReference = "refDELETEME"
             };
             context.Users.Add(TestUser1);
             context.Users.Add(TestUser2);
@@ -80,8 +71,6 @@ namespace NET_projekt.Models
             context.EmgDatasets.Add(Dataset4);
             context.EmgDatasets.Add(Dataset5);
             context.EmgDatasets.Add(Dataset6);
-            context.EcgDataPoints.Add(EcgPoint1);
-            context.EcgDataPoints.Add(EcgPoint2);
             context.SaveChanges();
             base.Seed(context);
         }

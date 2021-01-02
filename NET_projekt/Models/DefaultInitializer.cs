@@ -17,7 +17,8 @@ namespace NET_projekt.Models
             {
                 Nickname = "Janusz12345",
                 EmailAddress = "januszex@wp.pl",
-                Password = "541c57960bb997942655d14e3b9607f9", //hej
+                Password = "VuZ8xBCb6/nnGG6+T2shTq/0Pnk+0PSV7VQQP5ij6so=", //hej  sprawdzone - dziala
+                Salt = "otC9cez7YuqXPynsngnhfJcynN2PPu2YWPxnXX/VBeA=",
                 PremiumStatus = true
             };
             TestUser2 = new User
@@ -25,6 +26,7 @@ namespace NET_projekt.Models
                 Nickname = "Magik90",
                 EmailAddress = "maggik012@wp.pl",
                 Password = "541c57960bb997942655d14e3b9607f9", //hej
+                Salt = "dgheyriwe",
                 PremiumStatus = true
             };
             Dataset1 = new EcgDataset

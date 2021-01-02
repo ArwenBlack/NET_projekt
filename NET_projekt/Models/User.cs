@@ -17,13 +17,17 @@ namespace NET_projekt.Models
         public string Nickname { get; set; }
         //-----------------------------------------------------------------
         [Required]
-        public string Password { get; set; }
-        //-----------------------------------------------------------------
-        [Required]
         [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
         //-----------------------------------------------------------------
         [Required]
+        public string Password { get; set; }
+        //-----------------------------------------------------------------
+        [Required]
+        public string Salt { get; set; }
+        //-----------------------------------------------------------------
+        [Required]
+        
         public bool PremiumStatus { get; set; } = false;
         //-----------------------------------------------------------------
         public virtual ICollection<EcgDataset> EcgCollection { get; set; }

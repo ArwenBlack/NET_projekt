@@ -8,13 +8,40 @@ using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Text;
 using System.Security.Cryptography;
+using System.Net.Http.Headers;
+using System.Web.Razor.Generator;
+using System.Security.Cryptography.X509Certificates;
 
 namespace NET_projekt.Controllers
 {
     public class HomeController : Controller
     {
         private DefaultContext db = new DefaultContext();
-      
+        
+        
+        public (string, string) hash(string password)
+        {
+            //salt
+            byte[] salt;
+            new RNGCryptoServiceProvider().GetBytes(salt = new byte[32]);
+            string salt_string = Convert.ToBase64String(salt);
+            string salted_password = password + salt_string;
+
+            // hash
+            HashAlgorithm hasgAlg = new SHA256CryptoServiceProvider();
+            byte[] Value = System.Text.Encoding.UTF8.GetBytes(salted_password);
+            byte[] Hash = hasgAlg.ComputeHash(Value);
+            string hashed_password = Convert.ToBase64String(Hash);
+            return (salt_string, hashed_password);
+        }
+        public string only_hash(string salted_password)
+        {
+            HashAlgorithm hasgAlg = new SHA256CryptoServiceProvider();
+            byte[] Value = System.Text.Encoding.UTF8.GetBytes(salted_password);
+            byte[] Hash = hasgAlg.ComputeHash(Value);
+            string hashed_password = Convert.ToBase64String(Hash);
+            return hashed_password;
+        }
         public ActionResult Index()
         {
             if (Session["UserId"] != null)
@@ -44,11 +71,15 @@ namespace NET_projekt.Controllers
                 var ExistingUsername = db.Users.Where(u => u.Nickname.Equals(nickname)).ToList();
                 if (ExistingUsername.Count() == 0)
                 {
+                    var tuple_p = hash(password);
                     User NewUser = new User
                     {
+                       
                         Nickname = nickname,
                         EmailAddress = emailaddress,
-                        Password = GetMD5(password)
+                        Password = tuple_p.Item2,
+                        Salt = tuple_p.Item1
+                        
                     };
                     db.Configuration.ValidateOnSaveEnabled = false;
                     db.Users.Add(NewUser);
@@ -76,12 +107,14 @@ namespace NET_projekt.Controllers
         {
             if (ModelState.IsValid)
             {
-                string hashedpassword = GetMD5(password);
+               
                 var PossibleUser = db.Users.Where(u => u.Nickname.Equals(nickname)).ToList();
                 if(PossibleUser.Count() > 0)
                 {
                     User u = PossibleUser.FirstOrDefault();
-                    if(u.Password.Equals(hashedpassword))
+                    string salted_password = password + u.Salt;
+                    string hash_password = only_hash(salted_password);
+                    if (u.Password.Equals(hash_password))
                     {
                         Session["UserId"] = u.UserId;
                         Session["Nickname"] = u.Nickname;

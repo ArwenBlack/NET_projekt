@@ -243,3 +243,7 @@ D:\aNauka\1. Metody programowania .NET\Projekt\NET_projekt\NET_projekt\obj\Debug
 D:\aNauka\1. Metody programowania .NET\Projekt\NET_projekt\NET_projekt\obj\Debug\NET_projekt.csproj.CopyComplete
 D:\aNauka\1. Metody programowania .NET\Projekt\NET_projekt\NET_projekt\obj\Debug\NET_projekt.dll
 D:\aNauka\1. Metody programowania .NET\Projekt\NET_projekt\NET_projekt\obj\Debug\NET_projekt.pdb
+C:\Users\arwen\source\repos\NET_projekt\NET_projekt\bin\EntityFramework.dll
+C:\Users\arwen\source\repos\NET_projekt\NET_projekt\bin\EntityFramework.SqlServer.dll
+C:\Users\arwen\source\repos\NET_projekt\NET_projekt\bin\EntityFramework.xml
+C:\Users\arwen\source\repos\NET_projekt\NET_projekt\bin\EntityFramework.SqlServer.xml

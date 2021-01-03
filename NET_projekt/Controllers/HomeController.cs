@@ -11,14 +11,15 @@ using System.Security.Cryptography;
 using System.Net.Http.Headers;
 using System.Web.Razor.Generator;
 using System.Security.Cryptography.X509Certificates;
+using System.Web.UI.WebControls;
 
 namespace NET_projekt.Controllers
 {
     public class HomeController : Controller
     {
         private DefaultContext db = new DefaultContext();
-        
-        
+
+
         public (string, string) hash(string password)
         {
             //salt
@@ -74,12 +75,12 @@ namespace NET_projekt.Controllers
                     var tuple_p = hash(password);
                     User NewUser = new User
                     {
-                       
+
                         Nickname = nickname,
                         EmailAddress = emailaddress,
                         Password = tuple_p.Item2,
                         Salt = tuple_p.Item1
-                        
+
                     };
                     db.Configuration.ValidateOnSaveEnabled = false;
                     db.Users.Add(NewUser);
@@ -101,15 +102,17 @@ namespace NET_projekt.Controllers
             return View(new User());
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(string nickname, string password)
         {
+            
             if (ModelState.IsValid)
             {
-               
+
                 var PossibleUser = db.Users.Where(u => u.Nickname.Equals(nickname)).ToList();
-                if(PossibleUser.Count() > 0)
+                if (PossibleUser.Count() > 0)
                 {
                     User u = PossibleUser.FirstOrDefault();
                     string salted_password = password + u.Salt;
@@ -139,25 +142,16 @@ namespace NET_projekt.Controllers
             return View(new User());
         }
 
+
+        public ActionResult Main_view()
+        {
+            return View();
+        }
         public ActionResult Logout()
         {
             Session.Clear();
             return RedirectToAction("Login");
         }
 
-        public static string GetMD5(string str)
-        {
-            MD5 md5 = new MD5CryptoServiceProvider();
-            byte[] fromData = Encoding.UTF8.GetBytes(str);
-            byte[] targetData = md5.ComputeHash(fromData);
-            string byte2String = null;
-
-            for (int i = 0; i < targetData.Length; i++)
-            {
-                byte2String += targetData[i].ToString("x2");
-
-            }
-            return byte2String;
-        }
     }
 }

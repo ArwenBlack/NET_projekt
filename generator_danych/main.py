@@ -4,17 +4,17 @@ import pandas as pd
 
 
 def generate(time: int, rate: int):
-    ecg1 = nk.ecg_simulate(duration=time, sampling_rate= rate, method = "daubechies") # duration - ile sekund  #sampling rate - ile punktów na sekunde
-    ecg2 = nk.ecg_simulate(duration=time, sampling_rate= rate, method = "daubechies")
-    ecg3 = nk.ecg_simulate(duration=time, sampling_rate= rate, method="daubechies")
+    ecg1 = nk.ecg_simulate(duration=time, sampling_rate= rate, method = "ecgsyn") # duration - ile sekund  #sampling rate - ile punktów na sekunde
+    ecg2 = nk.ecg_simulate(duration=time, sampling_rate= rate, method = "ecgsyn")
+    ecg3 = nk.ecg_simulate(duration=time, sampling_rate= rate, method="ecgsyn")
     ecg4 = nk.ecg_simulate(duration=time, sampling_rate= rate, method="daubechies")
-    emg1 = nk.emg_simulate(duration=time, sampling_rate= rate, burst_number=3)
-    emg2 = nk.emg_simulate(duration=time, sampling_rate= rate, burst_number=3)
-    emg3 = nk.emg_simulate(duration=time, sampling_rate= rate,  burst_number=3)
-    emg4 = nk.emg_simulate(duration=time, sampling_rate= rate, burst_number=3)
+    emg1 = nk.emg_simulate(duration=time, sampling_rate= rate, random_state=1, burst_number=3)
+    emg2 = nk.emg_simulate(duration=time, sampling_rate= rate, random_state=2, burst_number=3)
+    emg3 = nk.emg_simulate(duration=time, sampling_rate= rate, random_state=3, burst_number=3)
+    emg4 = nk.emg_simulate(duration=time, sampling_rate= rate, random_state=4, burst_number=3)
     # sa jeszcze analogicznie fajne wykresy dla ppg, rsp i eda
-    #signal, info = nk.emg_process(emg4, sampling_rate=250)  #możan sobie wyświetlić ładnie wykresy
-    #nk.emg_plot(signal, sampling_rate=250)
+    nk.signal_plot(ecg1, sampling_rate=rate)
+    nk.signal_plot(ecg2, sampling_rate=rate)
 
     data = pd.DataFrame({'ecg1': ecg1,
                          'ecg2': ecg2,
@@ -27,5 +27,10 @@ def generate(time: int, rate: int):
                          })
     return data
 
-data = generate(7200, 10)
-data.to_csv(r'ecg_emg_10Hz_2h.csv')
+
+data = generate(1800, 10)
+data.to_csv(r'ecg_emg_10Hz_30min.csv')
+data = generate(1800, 100)
+data.to_csv(r'ecg_emg_100Hz_30min.csv')
+data = generate(1800, 250)
+data.to_csv(r'ecg_emg_250Hz_30min.csv')

@@ -12,6 +12,10 @@ using System.Net.Http.Headers;
 using System.Web.Razor.Generator;
 using System.Security.Cryptography.X509Certificates;
 using System.Web.UI.WebControls;
+using System.Drawing.Printing;
+using Microsoft.VisualBasic.FileIO;
+using System.Runtime.Remoting.Messaging;
+using Newtonsoft.Json;
 
 namespace NET_projekt.Controllers
 {
@@ -153,5 +157,59 @@ namespace NET_projekt.Controllers
             return RedirectToAction("Login");
         }
 
+        public ActionResult Example_plot(bool ecg, bool emg, int choose_Hz, int time)
+        {
+            string path = @"C:\\Users\\arwen\\source\\repos\\NET_projekt\\Dane";
+            List<DataPoint> ECG = new List<DataPoint>();
+            List<DataPoint> EMG = new List<DataPoint>();
+            double a = 0;
+            switch (choose_Hz)
+            {
+                case 10:
+                    path = @"C:\\Users\\arwen\\source\\repos\\NET_projekt\\Dane\\ecg_emg_10Hz_30s.csv";
+                    a = 0.1;
+                    break;
+                case 100:
+                    path = @"C:\\Users\\arwen\\source\\repos\\NET_projekt\\Dane\\ecg_emg_100Hz_30s.csv";
+                    a = 0.01;
+                    break;
+
+                case 250:
+                    path = @"C:\\Users\\arwen\\source\\repos\\NET_projekt\\Dane\\ecg_emg_250Hz_30s.csv";
+                    a = 0.004;
+                    break;
+                defult:
+                    break;
+            }
+            using (TextFieldParser csvParser = new TextFieldParser(path))
+            {
+                csvParser.CommentTokens = new string[] { "#" };
+                csvParser.SetDelimiters(new string[] { "," });
+                csvParser.HasFieldsEnclosedInQuotes = true;
+                csvParser.ReadLine();
+                double ile = 0;
+                while (!csvParser.EndOfData && ile<=time)
+                {
+                    string[] fields = csvParser.ReadFields();
+                    
+                    ECG.Add(new DataPoint(ile, Convert.ToDouble(fields[1])));
+                    
+                    EMG.Add(new DataPoint(ile, Convert.ToDouble(fields[2])));
+                    ile += a;
+                }
+            }
+            if (ecg == true)
+            {
+                ViewBag.DataPoints = JsonConvert.SerializeObject(ECG);
+                ViewBag.MyMessage = "ECG";
+            }
+            if (emg == true)
+            {
+                ViewBag.DataPoints = JsonConvert.SerializeObject(EMG);
+                ViewBag.MyMessage = "EMG";
+            }
+
+            return View();
+        }
     }
 }

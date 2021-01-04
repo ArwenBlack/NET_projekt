@@ -15,9 +15,9 @@ def generate_emg(time, rate):
 
     return emg
 
-ecg = generate_ecg(10, 10)
-emg = generate_emg(10, 10)
+ecg = generate_ecg(30, 250)
+emg = generate_emg(30, 250)
 
 data = DataFrame({"ecg": ecg, "emg": emg})
-data.to_csv(r"data.csv")
+data.to_csv(r"ecg_emg_250Hz_30s.csv")
 

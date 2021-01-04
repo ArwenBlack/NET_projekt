@@ -1,4 +1,6 @@
-﻿
+﻿@using NET_projekt.Models
+@model NET_projekt.Models.Example_Data
+
 @{
     ViewBag.Title = "Main_view";
 }
@@ -14,48 +16,51 @@
             <input type="file" id="myfile" name="myfile">
 
         </div>
+
         <div class="col-4">
 
-            <div class="fs-3">
-                Wirtualizacja przykładowych danych
-            </div>
-            <div class=" text-center">
-                <div class="row justify-content-center">
-                    <div class="col-4">
-                        <div class="form-check">
-
-                            <input type="checkbox" class="form-check-input" id="ecg">
-                            <label class="form-check-label" for="ecg" >ECG</label>
-                            
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="emg">
-                            <label class="form-check-label" for="emg", value ="1">EMG</label>
-                        </div>
-                    </div>
+            @using (Html.BeginForm("Example_plot", "Home", new { id = "FilterClick" }, FormMethod.Post, null))
+            {
+                <div class="fs-3">
+                    Wirtualizacja przykładowych danych
                 </div>
-                <select class="custom-select"
-                        style="width:250px;">
-                    <option>10HZ</option>
-                    <option>100Hz</option>
-                    <option>250Hz</option>
-                </select>
-                <select class="custom-select"
-                        style="width:250px;">
-                    <option>10 s</option>
-                    <option>20 s</option>
-                    <option>30 s</option>
-                </select>
-                <button type="button" class="btn btn-outline-secondary btn-sm btn-block r">Generuj wykres</button>
-            </div>
+                <div class=" text-center">
+                    <div class="row justify-content-center">
+                        <div class="col-4">
+                            <div class="form-check">
+
+                                @Html.CheckBoxFor(m => m.ecg)
+                                <label class="form-check-label" for="ecg">ECG</label>
+
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-check">
+                                @Html.CheckBoxFor(m => m.emg)
+                                <label class="form-check-label" for="emg" , value="1">EMG</label>
+                            </div>
+                        </div>
+                    </div>
+                    @Html.DropDownListFor(m => m.choose_Hz,
+                                                           new List<SelectListItem> {
+                                                                 new SelectListItem { Value = "10", Text = "10Hz" },
+                                                                 new SelectListItem { Value = "100", Text = "100Hz" },
+                                                                 new SelectListItem { Value = "250", Text = "250Hz" }
+                                                           }, "Wybierz czestotliwośc")
+
+                    @Html.DropDownListFor(m => m.time,
+                                                            new List<SelectListItem> {
+                                                                  new SelectListItem { Value = "10", Text = "10s" },
+                                                                  new SelectListItem { Value = "20", Text = "20s" },
+                                                                  new SelectListItem { Value = "30", Text = "30s" }
+                                                            }, "Wybierz czas")
+                    <input type="submit" value="Generuj wykres" id="Submit" class="btn btn-outline-secondary btn-sm btn-block" />
+                </div>
+            }
         </div>
 
     </div>
-
-
-
+</div>
 
 
 

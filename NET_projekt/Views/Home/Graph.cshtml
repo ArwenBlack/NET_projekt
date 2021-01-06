@@ -1,0 +1,98 @@
+﻿@model NET_projekt.Models.Dataset
+@{
+    ViewBag.Title = "Graph";
+}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script>
+        var freq = @Convert.ToString(Model.DatasetHzFrequency);
+        var l = "@Html.Raw(Model.DatasetColumnsInfo)";
+        l = l.split(" ");
+        for (var i = 0; i < l.length; i++) {
+            l[i] = l[i].split(":");
+            l[i][1] = l[i][1].split(",");
+        }
+        var typeList = new Array(l.length);
+        for (var i = 0; i < typeList.length; i++) {
+            typeList[i] = l[i][0];
+        }
+        var l2 = new Array();
+        for (var i = 0; i < l.length; i++) {
+            l2.push(l[i][1]);
+        }
+        var newlist = prepCols(l2);
+        function prepCols(lst) {
+            //prepare empty list
+            var lst2 = new Array(lst.length);
+            for (var i = 0; i < lst2.length; i++) {
+                lst2[i] = new Array(lst[i].length)
+                for (var j = 0; j < lst2[i].length; j++) {
+                    lst2[i][j] = { name: typeList[i] + " sensor " + (j + 1), type: "line", showInLegend: true, dataPoints: [] };
+                }
+            }
+            //fill list
+            var splitedLines = @Html.Raw(ViewBag.DataLines);
+            for (var executedColumns = 0; executedColumns < splitedLines.length; executedColumns++) {
+                var s = splitedLines[executedColumns].split(",");
+                for (var i = 0; i < lst.length; i++) {
+                    for (var j = 0; j < lst[i].length; j++) {
+                        lst2[i][j]['dataPoints'].push({ x: (executedColumns/freq), y: parseFloat(s[lst[i][j]]) });
+                    }
+                }
+            }
+            return lst2;
+        }
+
+        var charts = new Array(2);
+        window.onload = function () {
+            var charts = new Array(typeList.length);
+            for (var i = 0; i < typeList.length; i++) {
+                charts[i] = new CanvasJS.Chart("chart" + String(i),
+                    {
+                        animationEnabled: true,
+                        title: {
+                            text: "Wykres dla danych " + typeList[i]
+                        },
+                        axisX: {
+                            title: "Czas [s]",
+                            interval: (10 / freq),
+                            suffix: "s"
+                        },
+                        axisY: {
+                            title: "Aplituda Sygnału [-]"
+                        },
+                        legend: {
+                            cursor: "pointer",
+                            fontSize: 16,
+                            itemclick: toggleDataSeries
+                        },
+                        toolTip: {
+                            shared: true
+                        },
+                        data: newlist[i]
+                    });
+            }
+            for (var i = 0; i < charts.length; i++) {
+                charts[i].render();
+            }
+        }
+
+        function toggleDataSeries(e) {
+            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                e.dataSeries.visible = false;
+            }
+            else {
+                e.dataSeries.visible = true;
+            }
+            e.chart.render();
+        }
+    </script>
+</head>
+<body>
+    <div id="chart0" style="height: 370px; width: 100%;"></div>
+    <div id="chart1" style="height: 370px; width: 100%;"></div>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>

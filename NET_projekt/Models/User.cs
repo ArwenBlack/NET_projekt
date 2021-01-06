@@ -30,8 +30,7 @@ namespace NET_projekt.Models
         
         public bool PremiumStatus { get; set; } = false;
         //-----------------------------------------------------------------
-        public virtual ICollection<EcgDataset> EcgCollection { get; set; }
-        public virtual ICollection<EmgDataset> EmgCollection { get; set; }
+        public virtual ICollection<Dataset> Datasets { get; set; }
         //-----------------------------------------------------------------
         /*[NotMapped]
         [Required]

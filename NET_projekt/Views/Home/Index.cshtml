@@ -23,14 +23,15 @@
 
 <div>MY ECG COLLECTION:</div>
 <table class="table">
-    @foreach (var item in Model.EcgCollection)
+    @foreach (var item in Model.Datasets)
     {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.DatasetName)
+                @Html.ActionLink("View", "Graph", new { id = item.Id })
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GoogleReference)
+                @Html.DisplayFor(modelItem => item.Reference)
             </td>
         </tr>
     }

@@ -9,15 +9,14 @@ namespace NET_projekt.Models
     public class DefaultInitializer : DropCreateDatabaseAlways<DefaultContext>
     {
         User TestUser1, TestUser2;
-        EcgDataset Dataset1, Dataset2, Dataset3;
-        EmgDataset Dataset4, Dataset5, Dataset6;
+        Dataset Dataset1, Dataset2, Dataset3;
         protected override void Seed(DefaultContext context)
         {
             TestUser1 = new User
             {
                 Nickname = "Janusz12345",
                 EmailAddress = "januszex@wp.pl",
-                Password = "VuZ8xBCb6/nnGG6+T2shTq/0Pnk+0PSV7VQQP5ij6so=", //hej  sprawdzone - dziala
+                Password = "VuZ8xBCb6/nnGG6+T2shTq/0Pnk+0PSV7VQQP5ij6so=",
                 Salt = "otC9cez7YuqXPynsngnhfJcynN2PPu2YWPxnXX/VBeA=",
                 PremiumStatus = true
             };
@@ -25,54 +24,39 @@ namespace NET_projekt.Models
             {
                 Nickname = "Magik90",
                 EmailAddress = "maggik012@wp.pl",
-                Password = "541c57960bb997942655d14e3b9607f9", //hej
-                Salt = "dgheyriwe",
+                Password = "VuZ8xBCb6/nnGG6+T2shTq/0Pnk+0PSV7VQQP5ij6so=",
+                Salt = "otC9cez7YuqXPynsngnhfJcynN2PPu2YWPxnXX/VBeA=",
                 PremiumStatus = true
             };
-            Dataset1 = new EcgDataset
+            Dataset1 = new Dataset
             {
-                ConcreteUser = TestUser1,
-                DatasetName = "t1",
-                GoogleReference = "refDELETEME"
+                DatasetName = "Samo ECG",
+                DatasetColumnsInfo = "ECG:1,2,3,4",
+                DatasetHzFrequency = 10,
+                Reference = @"D:\ecg_emg_10Hz_30min.csv",
+                ConcreteUser = TestUser1
             };
-            Dataset2 = new EcgDataset
+            Dataset2 = new Dataset
             {
-                ConcreteUser = TestUser1,
-                DatasetName = "t2",
-                GoogleReference = "refDELETEME"
+                DatasetName = "Samo EMG",
+                DatasetColumnsInfo = "EMG:5,6,7,8",
+                DatasetHzFrequency = 10,
+                Reference = @"D:\ecg_emg_10Hz_2h.csv",
+                ConcreteUser = TestUser1
             };
-            Dataset3 = new EcgDataset
+            Dataset3 = new Dataset
             {
-                ConcreteUser = TestUser2,
-                DatasetName = "t3",
-                GoogleReference = "refDELETEME"
-            };
-            Dataset4 = new EmgDataset
-            {
-                ConcreteUser = TestUser1,
-                DatasetName = "EMGT1-U1",
-                GoogleReference = "refDELETEME"
-            };
-            Dataset5 = new EmgDataset
-            {
-                ConcreteUser = TestUser2,
-                DatasetName = "EMGT2-U2",
-                GoogleReference = "refDELETEME"
-            };
-            Dataset6 = new EmgDataset
-            {
-                ConcreteUser = TestUser2,
-                DatasetName = "EMGT3-U2",
-                GoogleReference = "refDELETEME"
+                DatasetName = "ECG EMG wybrane kolumny",
+                DatasetColumnsInfo = "ECG:1,3 EMG:5,8",
+                DatasetHzFrequency = 100,
+                Reference = @"D:\ecg_emg_100Hz_30min.csv",
+                ConcreteUser = TestUser2
             };
             context.Users.Add(TestUser1);
             context.Users.Add(TestUser2);
-            context.EcgDatasets.Add(Dataset1);
-            context.EcgDatasets.Add(Dataset2);
-            context.EcgDatasets.Add(Dataset3);
-            context.EmgDatasets.Add(Dataset4);
-            context.EmgDatasets.Add(Dataset5);
-            context.EmgDatasets.Add(Dataset6);
+            context.Datasets.Add(Dataset1);
+            context.Datasets.Add(Dataset2);
+            context.Datasets.Add(Dataset3);
             context.SaveChanges();
             base.Seed(context);
         }

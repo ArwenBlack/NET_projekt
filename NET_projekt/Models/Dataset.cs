@@ -6,7 +6,7 @@ using System.Web;
 
 namespace NET_projekt.Models
 {
-    public class EcgDataset
+    public class Dataset
     {
         //-----------------------------------------------------------------
         public int Id { get; set; }
@@ -15,8 +15,15 @@ namespace NET_projekt.Models
         public string DatasetName { get; set; }
         //-----------------------------------------------------------------
         [Required]
-        public string GoogleReference { get; set; }
+        public string DatasetColumnsInfo { get; set; }
         //-----------------------------------------------------------------
+        [Required]
+        public int DatasetHzFrequency { get; set; }
+        //-----------------------------------------------------------------
+        [Required]
+        public string Reference { get; set; }
+        //-----------------------------------------------------------------
+        [Required]
         public virtual User ConcreteUser { get; set; }
         //-----------------------------------------------------------------
     }

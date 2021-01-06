@@ -16,6 +16,8 @@ using System.Drawing.Printing;
 using Microsoft.VisualBasic.FileIO;
 using System.Runtime.Remoting.Messaging;
 using Newtonsoft.Json;
+using System.Net;
+using System.IO;
 
 namespace NET_projekt.Controllers
 {
@@ -23,37 +25,13 @@ namespace NET_projekt.Controllers
     {
         private DefaultContext db = new DefaultContext();
 
-
-        public (string, string) hash(string password)
-        {
-            //salt
-            byte[] salt;
-            new RNGCryptoServiceProvider().GetBytes(salt = new byte[32]);
-            string salt_string = Convert.ToBase64String(salt);
-            string salted_password = password + salt_string;
-
-            // hash
-            HashAlgorithm hasgAlg = new SHA256CryptoServiceProvider();
-            byte[] Value = System.Text.Encoding.UTF8.GetBytes(salted_password);
-            byte[] Hash = hasgAlg.ComputeHash(Value);
-            string hashed_password = Convert.ToBase64String(Hash);
-            return (salt_string, hashed_password);
-        }
-        public string only_hash(string salted_password)
-        {
-            HashAlgorithm hasgAlg = new SHA256CryptoServiceProvider();
-            byte[] Value = System.Text.Encoding.UTF8.GetBytes(salted_password);
-            byte[] Hash = hasgAlg.ComputeHash(Value);
-            string hashed_password = Convert.ToBase64String(Hash);
-            return hashed_password;
-        }
+        //HTTP: GET------------------------------------------------------------------
         public ActionResult Index()
         {
             if (Session["UserId"] != null)
             {
                 string actsession = Session["Nickname"].ToString();
                 User actuser = db.Users.Where(u => u.Nickname.Equals(actsession)).FirstOrDefault();
-                //Taka ciekawostka - w Equals(...) nie można wstawić konwersji na stringa bo LINQ wywala błąd 
                 return View(actuser);
             }
             else
@@ -61,7 +39,27 @@ namespace NET_projekt.Controllers
                 return RedirectToAction("Login");
             }
         }
-
+        //HTTP: GET------------------------------------------------------------------
+        public ActionResult Graph(int? Id)
+        {
+            if (Id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Dataset Dts = db.Datasets.Find(Id);
+            if (Dts == null) return HttpNotFound();
+            StreamReader Sr = new StreamReader(Dts.Reference);
+            List<String> Lines = new List<String>();
+            Sr.ReadLine();
+            for (int i = 0; i < 50; i++)
+            {
+                string s = Sr.ReadLine();
+                Lines.Add(s);
+            }
+            ViewBag.DataLines = JsonConvert.SerializeObject(Lines);
+            return View(Dts);
+        }
+        //HTTP: GET------------------------------------------------------------------
         public ActionResult Register()
         {
             return View(new User());
@@ -100,12 +98,11 @@ namespace NET_projekt.Controllers
             return View(new User());
         }
 
-        //HTTP GET
+        //HTTP: GET------------------------------------------------------------------
         public ActionResult Login()
         {
             return View(new User());
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -146,18 +143,21 @@ namespace NET_projekt.Controllers
             return View(new User());
         }
 
-
+        //HTTP: GET------------------------------------------------------------------
         public ActionResult Main_view()
         {
-            return View();
+            return View(new Example_Data());
         }
+
+        //HTTP: GET------------------------------------------------------------------
         public ActionResult Logout()
         {
             Session.Clear();
             return RedirectToAction("Login");
         }
 
-        public ActionResult Example_plot(bool ecg, bool emg, int choose_Hz, int time)
+        //HTTP: GET------------------------------------------------------------------
+        /*public ActionResult Example_plot(bool ecg, bool emg, int choose_Hz, int time)
         {
             string path = @"C:\\Users\\arwen\\source\\repos\\NET_projekt\\Dane";
             List<DataPoint> ECG = new List<DataPoint>();
@@ -210,6 +210,30 @@ namespace NET_projekt.Controllers
             }
 
             return View();
+        }*/
+        //Additional methods-----------------------------------------------------
+        public (string, string) hash(string password)
+        {
+            //salt
+            byte[] salt;
+            new RNGCryptoServiceProvider().GetBytes(salt = new byte[32]);
+            string salt_string = Convert.ToBase64String(salt);
+            string salted_password = password + salt_string;
+
+            // hash
+            HashAlgorithm hasgAlg = new SHA256CryptoServiceProvider();
+            byte[] Value = System.Text.Encoding.UTF8.GetBytes(salted_password);
+            byte[] Hash = hasgAlg.ComputeHash(Value);
+            string hashed_password = Convert.ToBase64String(Hash);
+            return (salt_string, hashed_password);
+        }
+        public string only_hash(string salted_password)
+        {
+            HashAlgorithm hasgAlg = new SHA256CryptoServiceProvider();
+            byte[] Value = System.Text.Encoding.UTF8.GetBytes(salted_password);
+            byte[] Hash = hasgAlg.ComputeHash(Value);
+            string hashed_password = Convert.ToBase64String(Hash);
+            return hashed_password;
         }
     }
 }

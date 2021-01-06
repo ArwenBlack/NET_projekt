@@ -16,6 +16,8 @@ using System.Drawing.Printing;
 using Microsoft.VisualBasic.FileIO;
 using System.Runtime.Remoting.Messaging;
 using Newtonsoft.Json;
+using System.IO;
+using System.Reflection;
 
 namespace NET_projekt.Controllers
 {
@@ -159,23 +161,29 @@ namespace NET_projekt.Controllers
 
         public ActionResult Example_plot(bool ecg, bool emg, int choose_Hz, int time)
         {
-            string path = @"C:\\Users\\arwen\\source\\repos\\NET_projekt\\Dane";
+
+            
+            string path =  @"../../Dane";
             List<DataPoint> ECG = new List<DataPoint>();
             List<DataPoint> EMG = new List<DataPoint>();
+           
             double a = 0;
             switch (choose_Hz)
             {
                 case 10:
-                    path = @"C:\\Users\\arwen\\source\\repos\\NET_projekt\\Dane\\ecg_emg_10Hz_30s.csv";
+                    path = AppDomain.CurrentDomain.BaseDirectory;
+                    path = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(path)), @"Dane\ecg_emg_10Hz_30s.csv");
                     a = 0.1;
                     break;
                 case 100:
-                    path = @"C:\\Users\\arwen\\source\\repos\\NET_projekt\\Dane\\ecg_emg_100Hz_30s.csv";
+                    path = AppDomain.CurrentDomain.BaseDirectory;
+                    path = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(path)), @"Dane\ecg_emg_100Hz_30s.csv");
                     a = 0.01;
                     break;
 
                 case 250:
-                    path = @"C:\\Users\\arwen\\source\\repos\\NET_projekt\\Dane\\ecg_emg_250Hz_30s.csv";
+                    path = AppDomain.CurrentDomain.BaseDirectory;
+                    path = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(path)), @"Dane\ecg_emg_250Hz_30s.csv");
                     a = 0.004;
                     break;
                 defult:

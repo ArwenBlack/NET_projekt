@@ -1,40 +1,85 @@
 ﻿@{
     ViewBag.Title = "Example_plot";
-    
+
 }
 
 <h2>Przykładowy wykres</h2>
 
 <h2 class=" text-center">
-     @ViewBag.MyMessage
+    @ViewBag.MyMessage
 </h2>
 
 <head>
     <script>
         window.onload = function () {
-            var chart = new CanvasJS.Chart("chartContainer", {
+            var chart = new CanvasJS.StockChart("chartContainer", {
                 animationEnabled: true,
+                exportEnabled: true,
+                title: {
+
+                },
+                charts: [{
+                    axisX: {
+                        title: "Czas",
+                        suffix: "s",
+                        crosshair: {
+                            enabled: true,
+                            snapToDataPoint: true
+                        }
+                    },
+                    axisY: {
+                        title: "Amplituda",
+                        suffix: "mV",
+                        crosshair: {
+                            enabled: true,
+                            snapToDataPoint: true
+                        }
+                    },
+                    data: [{
+                        type: "spline",
+                        dataPoints: @Html.Raw(ViewBag.DataPoints),
+                     }]
+                }],
+                rangeSelector: {
+                    inputFields: {
+                        startValue: 0,
+                        endValue: 5,
+                        valueFormatString: "###0"
+                    },
+
+                    buttons: [{
+                        label: "5",
+                        range: 5,
+                        rangeType: "number"
+                    }, {
+                        label: "10",
+                        range: 10,
+                        rangeType: "number"
+                    }, {
+                        label: "15",
+                        range: 15,
+                        rangeType: "number"
+                    }, {
+                        label: "All",
+                        rangeType: "all"
+                    }]
+                }
+
                 
-                axisX: {
-                    title: "Czas",
-                    suffix: "s"
-                },
-                axisY: {
-                    title: "Amplituda",
-                    suffix: "mV"
-                },
-                data: [{
-                    type: "spline",
-                    dataPoints: @Html.Raw(ViewBag.DataPoints)
-                }]
             });
+
             chart.render();
 
         }
     </script>
 </head>
+
+
+
 <body>
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <div id="chartContainer" style="height: 370px; width: 90%;"></div>
+    <script src = "https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-</body>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+</body >
 

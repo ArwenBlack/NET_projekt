@@ -1,9 +1,12 @@
 ﻿
 @{
     ViewBag.Title = "User_plot";
+    string t;
 }
 
 <h2>User_plot</h2>
+
+
 
 <div>
     <div class=" text-center">
@@ -24,6 +27,10 @@
 
                 },
                 charts: [{
+                    title: {
+                        @{t = string.Format("{0}", ViewBag.Fields1[0]); }
+                        text:   "@t"
+                    },
                     height: 200,
                     axisX: {
                         title: "Czas",
@@ -46,6 +53,10 @@
                         dataPoints: @Html.Raw(ViewBag.UserData1)
                     }]
                 }, {
+                    title: {
+                       @{t = string.Format("{0}", ViewBag.Fields1[1]); }
+                        text:   "@t"
+                    },
                     height: 200,
                     axisX: {
                         title: "Czas",
@@ -68,6 +79,10 @@
                             dataPoints: @Html.Raw(ViewBag.UserData2)
                         }]
                     }, {
+                        title: {
+                            @{t = string.Format("{0}", ViewBag.Fields1[2]); }
+                            text:   "@t"
+                         },
                         height: 200,
                         axisX: {
                             title: "Czas",
@@ -90,6 +105,10 @@
                             dataPoints: @Html.Raw(ViewBag.UserData3)
                         }]
                     }, {
+                        title: {
+                            @{t = string.Format("{0}", ViewBag.Fields1[3]); }
+                            text:   "@t"
+                        },
                         height: 200,
                         axisX: {
                             title: "Czas",
@@ -109,11 +128,13 @@
                         },
                         data: [{
                             type: "spline",
-                            dataPoints: [
-                                
-                            ]
+                            dataPoints: @Html.Raw(ViewBag.UserData4)
                         }]
                     }, {
+                        title: {
+                            @{t = string.Format("{0}", ViewBag.Fields1[4]); }
+                            text:   "@t"
+                        },
                         height: 200,
                         axisX: {
                             title: "Czas",
@@ -133,11 +154,13 @@
                         },
                         data: [{
                             type: "spline",
-                            dataPoints: [
-                                
-                            ]
+                            dataPoints: @Html.Raw(ViewBag.UserData5)
                         }]
                     }, {
+                        title: {
+                             @{t = string.Format("{0}", ViewBag.Fields1[5]); }
+                             text:   "@t"
+                        },
                         height: 200,
                         axisX: {
                             title: "Czas",
@@ -157,11 +180,13 @@
                         },
                         data: [{
                             type: "spline",
-                            dataPoints: [
-                                
-                            ]
+                            dataPoints: @Html.Raw(ViewBag.UserData6)
                         }]
                     }, {
+                        title: {
+                             @{t = string.Format("{0}", ViewBag.Fields1[6]); }
+                             text:   "@t"
+                        },
                         height: 200,
                         axisX: {
                             title: "Czas",
@@ -181,11 +206,13 @@
                         },
                         data: [{
                             type: "spline",
-                            dataPoints: [
-                                
-                            ]
+                            dataPoints: @Html.Raw(ViewBag.UserData7)
                         }]
                     }, {
+                        title: {
+                             @{t = string.Format("{0}", ViewBag.Fields1[7]); }
+                             text:   "@t"
+                         },
                         height: 200,
                         axisX: {
                             title: "Czas",
@@ -205,14 +232,12 @@
                         },
                         data: [{
                             type: "spline",
-                            dataPoints: [
-                                
-                            ]
+                            dataPoints: @Html.Raw(ViewBag.UserData8)
                         }]
                     }],
                 rangeSelector: {
                     inputFields: {
-                        
+
                         valueFormatString: "###0"
                     },
 

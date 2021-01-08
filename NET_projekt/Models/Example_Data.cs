@@ -18,6 +18,7 @@ namespace NET_projekt.Models
         public int time { get; set; }
 
         public int start_time { get; set; }
+        public int wyw { get; set;  }
         public List<string> data_list { get; set; }
 
     }

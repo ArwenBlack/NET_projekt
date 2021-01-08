@@ -248,12 +248,12 @@ namespace NET_projekt.Controllers
 
         }
         
-        public ActionResult User_plot(List<String> l, int choose_Hz, int start_time)
+        public ActionResult User_plot(List<String> data_list, int choose_Hz, int start_time, int wyw)
         {
-            Session["l"] = l;
+            
             Session["choose_Hz"] = choose_Hz;
             Session["start_time"] = start_time;
-
+            string[] fields_name = new string[8];
             int end_time = start_time + 30;
             List<List<DataPoint>> user_data = new List<List<DataPoint>>();
             var path = (string)Session["path"];
@@ -271,42 +271,79 @@ namespace NET_projekt.Controllers
                     double ile = start_time;
                     List<DataPoint> pom = new List<DataPoint>();
                     user_data.Add(pom);
+                    double count = 0;
                     while (!csvParser.EndOfData && ile < end_time)
                     {
-                        string[] f= csvParser.ReadFields();
-                        user_data[i-1].Add(new DataPoint(ile, Convert.ToDouble(f[i])));
-                        
-                        ile += skok;
+                        if (count >= start_time)
+                        {
+                            string[] f = csvParser.ReadFields();
+                            user_data[i - 1].Add(new DataPoint(ile, Convert.ToDouble(f[i])));
+                            ile += skok;
+                        }
+                        else
+                        {
+                            csvParser.ReadLine();
+                            count += skok;
+                        }
                     }
                     
-                }
-                List<DataPoint> pom1 = new List<DataPoint>();
-                for (int i = fields.Count; i<=8; i++)
+                }    
+            }
+            List<DataPoint> pom1 = new List<DataPoint>();
+            for (int i = fields.Count; i <= 8; i++)
+            {
+                user_data.Add(pom1);
+
+            }
+            if (wyw == 0)
+            {
+                for (int i = 0; i < data_list.Count; i++)
                 {
-                    user_data.Add(pom1);
+                    fields_name[i] = data_list[i];
                 }
-                    
+                for (int i = data_list.Count; i < 8; i++)
+                {
+                    fields_name[i] = "";
+
+                }
+                Session["data_list"] = data_list;
+            }
+            else
+            {
+                var data = (List<String>)Session["data_list_2"];
+                for (int i = 0; i < data.Count; i++)
+                {
+                    fields_name[i] = data[i];
+                }
+                for (int i = data.Count; i < 8; i++)
+                {
+                    fields_name[i] = "";
+                }
+                Session["data_list"] = data;
             }
             ViewBag.UserData1 = JsonConvert.SerializeObject(user_data[0]);
             ViewBag.UserData2 = JsonConvert.SerializeObject(user_data[1]);
             ViewBag.UserData3 = JsonConvert.SerializeObject(user_data[2]);
-            ViewBag.UserData4 = user_data[3];
-            ViewBag.UserData5 = user_data[4];
-            ViewBag.UserData6 = user_data[5];
-            ViewBag.UserData7 = user_data[6];
-            ViewBag.UserData8 = user_data[7];
+            ViewBag.UserData4 = JsonConvert.SerializeObject(user_data[3]);
+            ViewBag.UserData5 = JsonConvert.SerializeObject(user_data[4]);
+            ViewBag.UserData6 = JsonConvert.SerializeObject(user_data[5]);
+            ViewBag.UserData7 = JsonConvert.SerializeObject(user_data[6]);
+            ViewBag.UserData8 = JsonConvert.SerializeObject(user_data[7]);
+            ViewBag.Fields1 = fields_name;
             return View();
         }
 
         public ActionResult Next_data()
         {
             int time = Convert.ToInt32(Session["start_time"]) + 30;
-            return RedirectToAction("User_plot", new { l = Session["l"], choose_Hz = Session["choose_Hz"], start_time = time }) ;
+            Session["data_list_2"] = Session["data_list"];
+            return RedirectToAction("User_plot", new { choose_Hz = Session["choose_Hz"], start_time = time, wyw=1 }) ;
         }
         public ActionResult Previous_data()
         {
             int time = Convert.ToInt32(Session["start_time"]) - 30;
-            return RedirectToAction("User_plot", new { l = Session["l"], choose_Hz = Session["choose_Hz"], start_time = time });
+            Session["data_list_2"] = Session["data_list"];
+            return RedirectToAction("User_plot", new {choose_Hz = Session["choose_Hz"], start_time = time, wyw=1});
         }
         //Additional methods-----------------------------------------------------
         public (string, string) hash(string password)

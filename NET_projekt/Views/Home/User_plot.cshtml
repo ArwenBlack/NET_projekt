@@ -1,0 +1,259 @@
+﻿
+@{
+    ViewBag.Title = "User_plot";
+}
+
+<h2>User_plot</h2>
+
+<div>
+    <div class=" text-center">
+        <input type="button" value="Previous-data" onclick="location.href='@Url.Action("Previous_data", "Home")'" />
+        <input type="button" value="Next_data" onclick="location.href='@Url.Action("Next_data", "Home")'" />
+
+    </div>
+</div>
+
+<head>
+    <script>
+        window.onload = function () {
+            var chart1 = new CanvasJS.StockChart("chartContainer1", {
+                animationEnabled: true,
+                exportEnabled: true,
+
+                title: {
+
+                },
+                charts: [{
+                    height: 200,
+                    axisX: {
+                        title: "Czas",
+                        suffix: "s",
+                        crosshair: {
+                            enabled: true,
+                            snapToDataPoint: true
+                        }
+                    },
+                    axisY: {
+                        title: "Amplituda",
+                        suffix: "mV",
+                        crosshair: {
+                            enabled: true,
+                            snapToDataPoint: true
+                        }
+                    },
+                    data: [{
+                        type: "spline",
+                        dataPoints: @Html.Raw(ViewBag.UserData1)
+                    }]
+                }, {
+                    height: 200,
+                    axisX: {
+                        title: "Czas",
+                        suffix: "s",
+                        crosshair: {
+                            enabled: true,
+                            snapToDataPoint: true
+                        }
+                    },
+                        axisY: {
+                            title: "Amplituda",
+                            suffix: "mV",
+                            crosshair: {
+                                enabled: true,
+                                snapToDataPoint: true
+                            }
+                        },
+                        data: [{
+                            type:"spline",
+                            dataPoints: @Html.Raw(ViewBag.UserData2)
+                        }]
+                    }, {
+                        height: 200,
+                        axisX: {
+                            title: "Czas",
+                            suffix: "s",
+                            crosshair: {
+                                enabled: true,
+                                snapToDataPoint: true
+                            }
+                        },
+                        axisY: {
+                            title: "Amplituda",
+                            suffix: "mV",
+                            crosshair: {
+                                enabled: true,
+                                snapToDataPoint: true
+                            }
+                        },
+                        data: [{
+                            type: "spline",
+                            dataPoints: @Html.Raw(ViewBag.UserData3)
+                        }]
+                    }, {
+                        height: 200,
+                        axisX: {
+                            title: "Czas",
+                            suffix: "s",
+                            crosshair: {
+                                enabled: true,
+                                snapToDataPoint: true
+                            }
+                        },
+                        axisY: {
+                            title: "Amplituda",
+                            suffix: "mV",
+                            crosshair: {
+                                enabled: true,
+                                snapToDataPoint: true
+                            }
+                        },
+                        data: [{
+                            type: "spline",
+                            dataPoints: [
+                                
+                            ]
+                        }]
+                    }, {
+                        height: 200,
+                        axisX: {
+                            title: "Czas",
+                            suffix: "s",
+                            crosshair: {
+                                enabled: true,
+                                snapToDataPoint: true
+                            }
+                        },
+                        axisY: {
+                            title: "Amplituda",
+                            suffix: "mV",
+                            crosshair: {
+                                enabled: true,
+                                snapToDataPoint: true
+                            }
+                        },
+                        data: [{
+                            type: "spline",
+                            dataPoints: [
+                                
+                            ]
+                        }]
+                    }, {
+                        height: 200,
+                        axisX: {
+                            title: "Czas",
+                            suffix: "s",
+                            crosshair: {
+                                enabled: true,
+                                snapToDataPoint: true
+                            }
+                        },
+                        axisY: {
+                            title: "Amplituda",
+                            suffix: "mV",
+                            crosshair: {
+                                enabled: true,
+                                snapToDataPoint: true
+                            }
+                        },
+                        data: [{
+                            type: "spline",
+                            dataPoints: [
+                                
+                            ]
+                        }]
+                    }, {
+                        height: 200,
+                        axisX: {
+                            title: "Czas",
+                            suffix: "s",
+                            crosshair: {
+                                enabled: true,
+                                snapToDataPoint: true
+                            }
+                        },
+                        axisY: {
+                            title: "Amplituda",
+                            suffix: "mV",
+                            crosshair: {
+                                enabled: true,
+                                snapToDataPoint: true
+                            }
+                        },
+                        data: [{
+                            type: "spline",
+                            dataPoints: [
+                                
+                            ]
+                        }]
+                    }, {
+                        height: 200,
+                        axisX: {
+                            title: "Czas",
+                            suffix: "s",
+                            crosshair: {
+                                enabled: true,
+                                snapToDataPoint: true
+                            }
+                        },
+                        axisY: {
+                            title: "Amplituda",
+                            suffix: "mV",
+                            crosshair: {
+                                enabled: true,
+                                snapToDataPoint: true
+                            }
+                        },
+                        data: [{
+                            type: "spline",
+                            dataPoints: [
+                                
+                            ]
+                        }]
+                    }],
+                rangeSelector: {
+                    inputFields: {
+                        
+                        valueFormatString: "###0"
+                    },
+
+                    buttons: [{
+                        label: "5",
+                        range: 5,
+                        rangeType: "number",
+
+                    }, {
+                        label: "10",
+                        range: 10,
+                        rangeType: "number"
+                    }, {
+                        label: "15",
+                        range: 15,
+                        rangeType: "number"
+                    }, {
+                        label: "All",
+                        rangeType: "all"
+                    }]
+                }
+
+
+            });
+
+            chart1.render();
+
+        }
+    </script>
+</head>
+
+
+
+<body>
+    <div id="chartContainer1" style="height: 400px; width: 90%;"></div>
+ 
+    <script src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+</body>
+
+
+
+

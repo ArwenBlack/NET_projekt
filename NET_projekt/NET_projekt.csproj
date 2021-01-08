@@ -218,6 +218,7 @@
     <Content Include="Views\Home\Main_view.cshtml" />
     <Content Include="Views\Home\Example_plot.cshtml" />
     <Content Include="Views\Home\Graph.cshtml" />
+    <Content Include="Views\Home\User_plot.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -18,19 +18,13 @@ def generate(time: int, rate: int):
 
     data = pd.DataFrame({'ecg1': ecg1,
                          'ecg2': ecg2,
-                         'ecg3': ecg3,
-                         'ecg4': ecg4,
+
+
                          'emg1': emg1,
-                         'emg2': emg2,
-                         'emg3': emg3,
-                         'emg4': emg4,
+
                          })
     return data
 
 
-data = generate(1800, 10)
-data.to_csv(r'ecg_emg_10Hz_30min.csv')
-data = generate(1800, 100)
-data.to_csv(r'ecg_emg_100Hz_30min.csv')
-data = generate(1800, 250)
-data.to_csv(r'ecg_emg_250Hz_30min.csv')
+data = generate(6500, 10)
+data.to_csv(r'ecg_emg_10Hz_2h.csv')

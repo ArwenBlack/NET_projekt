@@ -12,11 +12,48 @@
                 Wirtualizacja danych bez logowania
             </div>
 
-            <label for="myfile"> Wybierz plik:</label>
-            <input type="file" id="myfile" name="myfile">
+            @using (Html.BeginForm("Main_view", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div>
+                    @Html.TextBox("file", "", new { type = "file" }) <br />
 
+                    <input type="submit" value="Przeslij" />
+                    @if (ViewBag.Message_err != null)
+                    {
+                        <span class="badge badge-danger">@ViewBag.Message_err</span>
+                    }
+                </div>
+            }
+
+            @using (Html.BeginForm("User_plot", "Home", FormMethod.Post, new { enctype = "multipart/form-data"}))
+            {
+
+                if (ViewBag.Message_ok == "1")
+                {
+        <div>
+
+
+            @foreach (string s in @ViewBag.Fields)
+            {
+                if (s != "")
+                {
+                    @Html.TextBoxFor(m => m.data_list, "")
+                    <label class="label label-default">@s</label>
+                    <div>
+
+                    </div>
+
+                }
+            }
+            @Html.TextBoxFor(m => m.choose_Hz)
+            <label class="label label-default">Częstotoliwość w HZ</label>
+            @Html.Hidden("start_time", 0)
+            <input type="submit" value="Generuj wykresy" />
         </div>
-
+                }
+            }
+            </div>
+        
         <div class="col-4">
 
             @using (Html.BeginForm("Example_plot", "Home", new { id = "FilterClick" }, FormMethod.Post, null))

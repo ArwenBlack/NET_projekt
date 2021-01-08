@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "User_plot";
     string t;
+    int height;
 }
 
 <h2>User_plot</h2>
@@ -31,7 +32,9 @@
                         @{t = string.Format("{0}", ViewBag.Fields1[0]); }
                         text:   "@t"
                     },
-                    height: 200,
+                    @{ if (t == "") { height = 0; } else { height = 200; }
+                                }
+                    height: @height,
                     axisX: {
                         title: "Czas",
                         suffix: "s",
@@ -39,7 +42,7 @@
                             enabled: true,
                             snapToDataPoint: true
                         }
-                    },
+                        },
                     axisY: {
                         title: "Amplituda",
                         suffix: "mV",
@@ -57,7 +60,9 @@
                        @{t = string.Format("{0}", ViewBag.Fields1[1]); }
                         text:   "@t"
                     },
-                    height: 200,
+                    @{ if (t == "") { height = 0; } else { height = 200; }
+                                }
+                    height: @height,
                     axisX: {
                         title: "Czas",
                         suffix: "s",
@@ -83,7 +88,9 @@
                             @{t = string.Format("{0}", ViewBag.Fields1[2]); }
                             text:   "@t"
                          },
-                        height: 200,
+                        @{ if (t == "") { height = 0; } else { height = 200; }
+                                }
+                        height: @height,
                         axisX: {
                             title: "Czas",
                             suffix: "s",
@@ -109,8 +116,11 @@
                             @{t = string.Format("{0}", ViewBag.Fields1[3]); }
                             text:   "@t"
                         },
-                        height: 200,
+                        @{ if (t == "") { height = 0; } else { height = 200; }
+                                }
+                        height: @height,
                         axisX: {
+
                             title: "Czas",
                             suffix: "s",
                             crosshair: {
@@ -135,7 +145,9 @@
                             @{t = string.Format("{0}", ViewBag.Fields1[4]); }
                             text:   "@t"
                         },
-                        height: 200,
+                        @{ if (t == "") { height = 0; } else { height = 200; }
+                                }
+                        height: @height,
                         axisX: {
                             title: "Czas",
                             suffix: "s",
@@ -161,7 +173,9 @@
                              @{t = string.Format("{0}", ViewBag.Fields1[5]); }
                              text:   "@t"
                         },
-                        height: 200,
+                        @{ if (t == "") { height = 0; } else { height = 200; }
+                                }
+                        height: @height,
                         axisX: {
                             title: "Czas",
                             suffix: "s",
@@ -187,7 +201,9 @@
                              @{t = string.Format("{0}", ViewBag.Fields1[6]); }
                              text:   "@t"
                         },
-                        height: 200,
+                        @{ if (t == "") { height = 0; } else { height = 200; }
+                                }
+                        height: @height,
                         axisX: {
                             title: "Czas",
                             suffix: "s",
@@ -213,7 +229,9 @@
                              @{t = string.Format("{0}", ViewBag.Fields1[7]); }
                              text:   "@t"
                          },
-                        height: 200,
+                        @{ if (t == "") { height = 0; } else { height = 200; }
+                                }
+                        height: @height,
                         axisX: {
                             title: "Czas",
                             suffix: "s",

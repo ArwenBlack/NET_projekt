@@ -15,6 +15,10 @@ namespace NET_projekt.Models
         public string DatasetName { get; set; }
         //-----------------------------------------------------------------
         [Required]
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
+        public DateTime DateAdded { get; set; }
+        //-----------------------------------------------------------------
+        [Required]
         public string DatasetColumnsInfo { get; set; }
         //-----------------------------------------------------------------
         [Required]

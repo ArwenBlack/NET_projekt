@@ -31,6 +31,7 @@ namespace NET_projekt.Models
             Dataset1 = new Dataset
             {
                 DatasetName = "Samo ECG",
+                DateAdded = new DateTime(2018, 8, 12),
                 DatasetColumnsInfo = "ECG:1,2,3,4",
                 DatasetHzFrequency = 10,
                 Reference = @"D:\ecg_emg_10Hz_30min.csv",
@@ -39,6 +40,7 @@ namespace NET_projekt.Models
             Dataset2 = new Dataset
             {
                 DatasetName = "Samo EMG",
+                DateAdded = new DateTime(2018, 10, 1),
                 DatasetColumnsInfo = "EMG:5,6,7,8",
                 DatasetHzFrequency = 10,
                 Reference = @"D:\ecg_emg_10Hz_2h.csv",
@@ -47,6 +49,7 @@ namespace NET_projekt.Models
             Dataset3 = new Dataset
             {
                 DatasetName = "ECG EMG wybrane kolumny",
+                DateAdded = new DateTime(2020, 5, 30),
                 DatasetColumnsInfo = "ECG:1,3 EMG:5,8",
                 DatasetHzFrequency = 100,
                 Reference = @"D:\ecg_emg_100Hz_30min.csv",

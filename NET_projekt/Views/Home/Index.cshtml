@@ -3,38 +3,57 @@
 @{
     ViewBag.Title = "Index";
 }
-<div class="row justify-content-md-start">
+<div class="row justify-content-md-end">
     <div class="col-md-4">
         <div class="card">
             <div class="card-header">
-                Wellcome,
+                Witaj
             </div>
             <div class="card-body">
                 @if (Session["UserId"] != null)
                 {
-                    <p>Name: @Session["Nickname"].ToString()</p>
-                    <p>Email: @Session["EmailAddress"].ToString()</p>
-                    <a href="@Url.Action("Logout","Home")" class="btn btn-warning">Logout</a>
+                    <p>Nazwa: @Session["Nickname"].ToString()</p>
+                    <p>E-mail: @Session["EmailAddress"].ToString()</p>
+                    <a href="@Url.Action("Logout","Home")" class="btn btn-dark">Wyloguj się</a>
                 }
             </div>
         </div>
     </div>
 </div>
 
-<div>MY ECG COLLECTION:</div>
+<div style="margin-top: 50px;"><h1 class="row justify-content-md-center">Dostępne dataset'y:</h1></div>
 <table class="table">
-    @foreach (var item in Model.Datasets)
-    {
+    <caption>Dataset'y użytkownika @Session["Nickname"].ToString()</caption>
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DatasetName)
-                @Html.ActionLink("View", "Graph", new { id = item.Id })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Reference)
-            </td>
+            <th scope="col">#</th>
+            <th scope="col">Nazwa dataset'u</th>
+            <th scope="col">Data dodania</th>
+            <th scope="col">Typy danych</th>
+            <th scope="col">Częstotliwość [Hz]</th>
+            <th scope="col">Podgląd</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @{
+            for (int i = 0; i < Model.Datasets.Count; i++)
+            {
+                <tr>
+                    <th scope="row">@i</th>
+                    <td>@Html.DisplayFor(modelItem => Model.Datasets.ElementAt(i).DatasetName)</td>
+                    <td>@Html.DisplayFor(modelItem => Model.Datasets.ElementAt(i).DateAdded)</td>
+                    <td>@{
+                        string types = "";
+                        foreach(var item in Model.Datasets.ElementAt(i).DatasetColumnsInfo.Split(' '))
+                        {
+                            types += item.Split(':')[0]+" ";
+                        }
+                        @types
+                        }</td>
+                    <td>@Html.DisplayFor(modelItem => (Model.Datasets.ElementAt(i).DatasetHzFrequency))</td>
+                    <td><input type="button" value="Wykresy" onclick="location.href='@Url.Action("Graph", "Home", new { id = Model.Datasets.ElementAt(i).Id })'" /></td>
+                </tr>
+            }
+        }
+    </tbody>
 </table>
-@Session["UserId"]
-@Session["Nickname"]

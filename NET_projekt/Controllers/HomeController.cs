@@ -39,24 +39,35 @@ namespace NET_projekt.Controllers
             }
         }
         //HTTP: GET------------------------------------------------------------------
-        public ActionResult Graph(int? Id)
+        public ActionResult Graph(int? Id, int time = 0, bool previousData=false)
         {
+            if (time < 0) time = 0;
+            if (previousData == true) Session["StopForward"] = "false";
             if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Dataset Dts = db.Datasets.Find(Id);
+            Dataset Dts = db.Datasets.Find(Id); //Wyszukuje odpowiedni dataset w DB
             if (Dts == null) return HttpNotFound();
-            StreamReader Sr = new StreamReader(Dts.Reference);
-            List<String> Lines = new List<String>();
-            Sr.ReadLine();
-            for (int i = 0; i < 50; i++)
+            StreamReader Sr = new StreamReader(Dts.Reference); //Chwyta się odp. csv'ki
+            List<String> Lines = new List<String>(); //Pusta lista na przekazane linie
+
+            if (Session["StopForward"] == "true") time = time - 30;
+            for (int i = 0; i <= time * Dts.DatasetHzFrequency; i++) Sr.ReadLine();
+            for (int i = 0; i < 30 * Dts.DatasetHzFrequency; i++) //Doczytuje tyle linii, by było na 30 sekund
             {
+                if (Sr.EndOfStream == true)
+                {
+                    Session["StopForward"] = "true";
+                    break;
+                }
                 string s = Sr.ReadLine();
                 Lines.Add(s);
             }
-            ViewBag.DataLines = JsonConvert.SerializeObject(Lines);
-            return View(Dts);
+            ViewBag.DataLines = JsonConvert.SerializeObject(Lines); //Wstawia linie do vievbaga by łatwo je uzyskać w widoku
+
+            GraphModel Gm = new GraphModel { Dataset = Dts, Time = time };
+            return View(Gm);
         }
         //HTTP: GET------------------------------------------------------------------
         public ActionResult Register()
@@ -195,9 +206,9 @@ namespace NET_projekt.Controllers
                 {
                     string[] fields = csvParser.ReadFields();
 
-                    ECG.Add(new DataPoint(ile, Convert.ToDouble(fields[1])));
+                    ECG.Add(new DataPoint(ile, double.Parse(fields[1], System.Globalization.CultureInfo.InvariantCulture)));
 
-                    EMG.Add(new DataPoint(ile, Convert.ToDouble(fields[2])));
+                    EMG.Add(new DataPoint(ile, double.Parse(fields[2], System.Globalization.CultureInfo.InvariantCulture)));
                     ile += a;
                 }
             }
@@ -277,7 +288,7 @@ namespace NET_projekt.Controllers
                         if (count >= start_time)
                         {
                             string[] f = csvParser.ReadFields();
-                            user_data[i - 1].Add(new DataPoint(ile, Convert.ToDouble(f[i])));
+                            user_data[i - 1].Add(new DataPoint(ile, double.Parse(f[i], System.Globalization.CultureInfo.InvariantCulture)));
                             ile += skok;
                         }
                         else

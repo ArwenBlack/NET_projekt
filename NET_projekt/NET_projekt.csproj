@@ -176,6 +176,7 @@
     <Compile Include="Models\DefaultInitializer.cs" />
     <Compile Include="Models\Dataset.cs" />
     <Compile Include="Models\Example_Data.cs" />
+    <Compile Include="Models\GraphModel.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

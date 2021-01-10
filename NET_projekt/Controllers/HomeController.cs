@@ -52,7 +52,7 @@ namespace NET_projekt.Controllers
             StreamReader Sr = new StreamReader(Dts.Reference); //Chwyta się odp. csv'ki
             List<String> Lines = new List<String>(); //Pusta lista na przekazane linie
 
-            if (Session["StopForward"] == "true") time = time - 30;
+            if (Convert.ToString(Session["StopForward"]) == "true") time = time - 30;
             for (int i = 0; i <= time * Dts.DatasetHzFrequency; i++) Sr.ReadLine();
             for (int i = 0; i < 30 * Dts.DatasetHzFrequency; i++) //Doczytuje tyle linii, by było na 30 sekund
             {
@@ -68,6 +68,64 @@ namespace NET_projekt.Controllers
 
             GraphModel Gm = new GraphModel { Dataset = Dts, Time = time };
             return View(Gm);
+        }
+        //HTTP: GET------------------------------------------------------------------
+        public ActionResult AddDataset(int? UserId)
+        {
+            if (UserId == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            User User = db.Users.Find(UserId);
+            if (User == null) return HttpNotFound();
+            return View(new Dataset { ConcreteUser = User});
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddDataset(HttpPostedFileBase file, string DatasetName, string DatasetColumnsInfo, int DatasetHzFrequency)
+        {
+            if (ModelState.IsValid) //Model-binding validation - odwołuje się do adnotacji w Modelach
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    string extension = Path.GetExtension(file.FileName);
+                    if (extension == ".csv")
+                    {
+                        ViewBag.Message = "Wybrano odpowiedni plik";
+                        string path = Path.Combine(Server.MapPath("~"), Path.GetFileName(file.FileName));
+                        Dataset NewDataSet = new Dataset();
+                        NewDataSet.DatasetName = DatasetName;
+                        NewDataSet.DatasetColumnsInfo = DatasetColumnsInfo;
+                        NewDataSet.DatasetHzFrequency = DatasetHzFrequency;
+                        NewDataSet.ConcreteUser = db.Users.Find(Convert.ToInt32(Session["UserId"]));
+                        NewDataSet.Reference = path.ToString();
+                        NewDataSet.DateAdded = DateTime.Now;
+                        db.Datasets.Add(NewDataSet);
+                        db.SaveChanges();
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else ViewBag.Message = "Należy wybrać plik '.csv'";
+                }
+                else ViewBag.Message = "Nie wybrano konkretnego pliku.";
+                return View();
+            }
+            return View();
+        }
+        //HTTP: GET------------------------------------------------------------------
+        public ActionResult DeleteDataset(int? Id)
+        {
+            if (Id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            Dataset Dts = db.Datasets.Find(Id);
+            if (Dts == null) return HttpNotFound();
+            return View(Dts);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteDataset(int Id)
+        {
+            Dataset Dts = db.Datasets.Find(Id);
+            db.Datasets.Remove(Dts);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
         //HTTP: GET------------------------------------------------------------------
         public ActionResult Register()

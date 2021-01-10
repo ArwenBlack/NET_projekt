@@ -31,7 +31,7 @@
             <th scope="col">Data dodania</th>
             <th scope="col">Typy danych</th>
             <th scope="col">Częstotliwość [Hz]</th>
-            <th scope="col">Podgląd</th>
+            <th scope="col" class="text-center">Podgląd</th>
         </tr>
     </thead>
     <tbody>
@@ -51,9 +51,16 @@
                         @types
                         }</td>
                     <td>@Html.DisplayFor(modelItem => (Model.Datasets.ElementAt(i).DatasetHzFrequency))</td>
-                    <td><input type="button" value="Wykresy" onclick="location.href='@Url.Action("Graph", "Home", new { id = Model.Datasets.ElementAt(i).Id })'" /></td>
+                    <td class="text-center">
+                        <input type="button" value="Przejrzyj" class="btn btn-success" onclick="location.href='@Url.Action("Graph", "Home", new { id = Model.Datasets.ElementAt(i).Id })'" />
+                        <input type="button" value="Usuń" class="btn btn-danger" onclick="location.href='@Url.Action("DeleteDataset", "Home", new { id = Model.Datasets.ElementAt(i).Id })'" />
+                    </td>
                 </tr>
             }
         }
+    <tr>
+        <td colspan="5"></td>
+        <td class="text-center"><input type="button" value="Dodaj nowy" class="btn btn-primary" onclick="location.href='@Url.Action("AddDataset", "Home", new { UserId = Model.UserId  })'"/></td>
+    </tr>
     </tbody>
 </table>

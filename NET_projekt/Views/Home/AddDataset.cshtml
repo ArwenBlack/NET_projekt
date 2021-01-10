@@ -1,0 +1,58 @@
+﻿@model NET_projekt.Models.Dataset
+
+@{
+    ViewBag.Title = "Add Dataset";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+@using (Html.BeginForm("AddDataset", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <h4>Dodawanie dataset'u</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label for="file">Załącz plik (.csv):</label>
+            <input type="file" name="file" id="file" />
+            <div style="color: red;">
+                @ViewBag.Message
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top:20px;">
+            @Html.LabelFor(m => m.DatasetName)
+            <div>
+                @Html.EditorFor(m => m.DatasetName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.DatasetName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.DatasetColumnsInfo)
+            <div>
+                @Html.EditorFor(m => m.DatasetColumnsInfo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.DatasetColumnsInfo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.DatasetHzFrequency)
+            <div>
+                @Html.EditorFor(m => m.DatasetHzFrequency, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.DatasetHzFrequency, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group" , style="margin-top:20px;">
+            <input type="submit" class="btn btn-success" value="Dodaj dataset" /> |
+            @Html.ActionLink("Powrót", "Index")
+        </div>
+
+    </div>
+}

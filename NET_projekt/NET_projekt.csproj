@@ -220,6 +220,8 @@
     <Content Include="Views\Home\Example_plot.cshtml" />
     <Content Include="Views\Home\Graph.cshtml" />
     <Content Include="Views\Home\User_plot.cshtml" />
+    <Content Include="Views\Home\AddDataset.cshtml" />
+    <Content Include="Views\Home\DeleteDataset.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

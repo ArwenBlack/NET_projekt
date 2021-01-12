@@ -39,24 +39,93 @@ namespace NET_projekt.Controllers
             }
         }
         //HTTP: GET------------------------------------------------------------------
-        public ActionResult Graph(int? Id)
+        public ActionResult Graph(int? Id, int time = 0, bool previousData=false)
         {
+            if (time < 0) time = 0;
+            if (previousData == true) Session["StopForward"] = "false";
             if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Dataset Dts = db.Datasets.Find(Id);
+            Dataset Dts = db.Datasets.Find(Id); //Wyszukuje odpowiedni dataset w DB
             if (Dts == null) return HttpNotFound();
-            StreamReader Sr = new StreamReader(Dts.Reference);
-            List<String> Lines = new List<String>();
-            Sr.ReadLine();
-            for (int i = 0; i < 50; i++)
+            StreamReader Sr = new StreamReader(Dts.Reference); //Chwyta się odp. csv'ki
+            List<String> Lines = new List<String>(); //Pusta lista na przekazane linie
+
+            if (Convert.ToString(Session["StopForward"]) == "true") time = time - 30;
+            for (int i = 0; i <= time * Dts.DatasetHzFrequency; i++) Sr.ReadLine();
+            for (int i = 0; i < 30 * Dts.DatasetHzFrequency; i++) //Doczytuje tyle linii, by było na 30 sekund
             {
+                if (Sr.EndOfStream == true)
+                {
+                    Session["StopForward"] = "true";
+                    break;
+                }
                 string s = Sr.ReadLine();
                 Lines.Add(s);
             }
-            ViewBag.DataLines = JsonConvert.SerializeObject(Lines);
+            ViewBag.DataLines = JsonConvert.SerializeObject(Lines); //Wstawia linie do vievbaga by łatwo je uzyskać w widoku
+
+            GraphModel Gm = new GraphModel { Dataset = Dts, Time = time };
+            return View(Gm);
+        }
+        //HTTP: GET------------------------------------------------------------------
+        public ActionResult AddDataset(int? UserId)
+        {
+            if (UserId == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            User User = db.Users.Find(UserId);
+            if (User == null) return HttpNotFound();
+            return View(new Dataset { ConcreteUser = User});
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddDataset(HttpPostedFileBase file, string DatasetName, string DatasetColumnsInfo, int DatasetHzFrequency)
+        {
+            if (ModelState.IsValid) //Model-binding validation - odwołuje się do adnotacji w Modelach
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    string extension = Path.GetExtension(file.FileName);
+                    if (extension == ".csv")
+                    {
+                        ViewBag.Message = "Wybrano odpowiedni plik";
+                        string path = Path.Combine(Server.MapPath("~"), Path.GetFileName(file.FileName));
+                        Dataset NewDataSet = new Dataset();
+                        NewDataSet.DatasetName = DatasetName;
+                        NewDataSet.DatasetColumnsInfo = DatasetColumnsInfo;
+                        NewDataSet.DatasetHzFrequency = DatasetHzFrequency;
+                        NewDataSet.ConcreteUser = db.Users.Find(Convert.ToInt32(Session["UserId"]));
+                        NewDataSet.Reference = path.ToString();
+                        NewDataSet.DateAdded = DateTime.Now;
+                        db.Datasets.Add(NewDataSet);
+                        db.SaveChanges();
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else ViewBag.Message = "Należy wybrać plik '.csv'";
+                }
+                else ViewBag.Message = "Nie wybrano konkretnego pliku.";
+                return View();
+            }
+            return View();
+        }
+        //HTTP: GET------------------------------------------------------------------
+        public ActionResult DeleteDataset(int? Id)
+        {
+            if (Id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            Dataset Dts = db.Datasets.Find(Id);
+            if (Dts == null) return HttpNotFound();
             return View(Dts);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteDataset(int Id)
+        {
+            Dataset Dts = db.Datasets.Find(Id);
+            db.Datasets.Remove(Dts);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
         //HTTP: GET------------------------------------------------------------------
         public ActionResult Register()
@@ -195,9 +264,9 @@ namespace NET_projekt.Controllers
                 {
                     string[] fields = csvParser.ReadFields();
 
-                    ECG.Add(new DataPoint(ile, Convert.ToDouble(fields[1])));
+                    ECG.Add(new DataPoint(ile, double.Parse(fields[1], System.Globalization.CultureInfo.InvariantCulture)));
 
-                    EMG.Add(new DataPoint(ile, Convert.ToDouble(fields[2])));
+                    EMG.Add(new DataPoint(ile, double.Parse(fields[2], System.Globalization.CultureInfo.InvariantCulture)));
                     ile += a;
                 }
             }
@@ -277,7 +346,7 @@ namespace NET_projekt.Controllers
                         if (count >= start_time)
                         {
                             string[] f = csvParser.ReadFields();
-                            user_data[i - 1].Add(new DataPoint(ile, Convert.ToDouble(f[i])));
+                            user_data[i - 1].Add(new DataPoint(ile, double.Parse(f[i], System.Globalization.CultureInfo.InvariantCulture)));
                             ile += skok;
                         }
                         else

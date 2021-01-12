@@ -12,12 +12,12 @@
 
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Register</div>
+                    <div class="card-title">Rejestracja</div>
                 </div>
                 <div class="card-body">
                     <div class="form-group">
                         @Html.LabelFor(m => m.Nickname)
-                        @Html.TextBoxFor(m => m.Nickname, "", new { @class = "form-control", @placeholder = "Nickname" })
+                        @Html.TextBoxFor(m => m.Nickname, "", new { @class = "form-control", @placeholder = "Nazwa użytkownika" })
                         @Html.ValidationMessageFor(m => m.Nickname, "", new { @class = "badge badge-danger" })
                         @if (ViewBag.error != null)
                         {
@@ -26,16 +26,16 @@
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.EmailAddress)
-                        @Html.TextBoxFor(m => m.EmailAddress, "", new { @class = "form-control", @placeholder = "EmailAddress" })
+                        @Html.TextBoxFor(m => m.EmailAddress, "", new { @class = "form-control", @placeholder = "Adres e-mail" })
                         @Html.ValidationMessageFor(m => m.EmailAddress, "", new { @class = "badge badge-danger" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.Password)
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Hasło" })
                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "badge badge-danger" })
                     </div>
                     <div class="form-group">
-                        <input type="submit" name="submit" class="btn btn-danger" value="Register" />
+                        <input type="submit" name="submit" class="btn btn-danger" value="Rejestracja" />
                     </div>
                 </div>
             </div>

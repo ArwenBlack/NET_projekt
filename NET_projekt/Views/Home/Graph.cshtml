@@ -1,4 +1,4 @@
-﻿@model NET_projekt.Models.Dataset
+﻿@model NET_projekt.Models.GraphModel
 @{
     ViewBag.Title = "Graph";
 }
@@ -7,8 +7,9 @@
 <html>
 <head>
     <script>
-        var freq = @Convert.ToString(Model.DatasetHzFrequency);
-        var l = "@Html.Raw(Model.DatasetColumnsInfo)";
+        var freq = @Convert.ToString(Model.Dataset.DatasetHzFrequency);
+        var l = "@Html.Raw(Model.Dataset.DatasetColumnsInfo)";
+        var time = "@Html.Raw(Model.Time)";
         l = l.split(" ");
         for (var i = 0; i < l.length; i++) {
             l[i] = l[i].split(":");
@@ -36,16 +37,16 @@
             var splitedLines = @Html.Raw(ViewBag.DataLines);
             for (var executedColumns = 0; executedColumns < splitedLines.length; executedColumns++) {
                 var s = splitedLines[executedColumns].split(",");
+                //document.write("<br>" + splitedLines[executedColumns] + "</br>");
                 for (var i = 0; i < lst.length; i++) {
                     for (var j = 0; j < lst[i].length; j++) {
-                        lst2[i][j]['dataPoints'].push({ x: (executedColumns/freq), y: parseFloat(s[lst[i][j]]) });
+                        lst2[i][j]['dataPoints'].push({ x: (parseInt(time) + executedColumns/freq), y: parseFloat(s[lst[i][j]]) });
                     }
                 }
             }
             return lst2;
         }
 
-        var charts = new Array(2);
         window.onload = function () {
             var charts = new Array(typeList.length);
             for (var i = 0; i < typeList.length; i++) {
@@ -57,11 +58,11 @@
                         },
                         axisX: {
                             title: "Czas [s]",
-                            interval: (10 / freq),
+                            interval: 1,
                             suffix: "s"
                         },
                         axisY: {
-                            title: "Aplituda Sygnału [-]"
+                            title: "Aplituda Sygnału [mV]"
                         },
                         legend: {
                             cursor: "pointer",
@@ -91,8 +92,33 @@
     </script>
 </head>
 <body>
-    <div id="chart0" style="height: 370px; width: 100%;"></div>
-    <div id="chart1" style="height: 370px; width: 100%;"></div>
+    <script>
+        for (var i = 0; i < typeList.length; i++) {
+            var x = "<div id=chart" + i + " style=\"height: 370px; width: 100 %;\"></div>";
+            document.write(x);
+        }
+    </script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <div style="margin-top:20px;">
+        <div class=" text-center">
+            <input type="button" class="btn btn-dark" value="Poprzednie dane" onclick="location.href='@Url.Action("Graph", "Home", new { Id = Model.Dataset.Id, time = Model.Time - 30, previousData=true })'" />
+            <input type="button" class="btn btn-dark" value="Następne dane" onclick="location.href='@Url.Action("Graph", "Home", new { Id = Model.Dataset.Id, time = Model.Time + 30 })'" />
+        </div>
+    </div>
+    <div style="margin-top:10px;">
+        <div class=" text-center">
+            @using (Html.BeginForm("Graph", "Home", FormMethod.Get))
+            {
+                <input type="submit" class="btn btn-dark" value="Skocz do sekundy" />
+                @Html.TextBoxFor(m => m.Time)
+            }
+        </div>
+    </div>
+    <div style="margin-top:10px;">
+        <div class=" text-center">
+            <input type="button" class="btn btn-dark" value="Wróć" onclick="location.href='@Url.Action("Index", "Home")'" />
+        </div>
+    </div>
 </body>
 </html>

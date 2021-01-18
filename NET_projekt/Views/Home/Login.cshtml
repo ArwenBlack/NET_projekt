@@ -8,7 +8,7 @@
     <div class="col-md-4">
         <div class="card">
             <div class="card-header">
-                Login
+                <div class="card-title">Logowanie</div>
             </div>
             <div class="card-body">
                 @using (Html.BeginForm("Login", "Home", FormMethod.Post))
@@ -16,7 +16,7 @@
                     @Html.AntiForgeryToken()
                     <div class="form-group">
                         @Html.LabelFor(m => m.Nickname)
-                        @Html.TextBoxFor(m => m.Nickname, "", new { @class = "form-control", @placeholder = "Nickname" })
+                        @Html.TextBoxFor(m => m.Nickname, "", new { @class = "form-control", @placeholder = "Nazwa użytkownika"})
                         @if (ViewBag.error != null && ViewBag.error[ViewBag.error.Length - 1] == '.')
                         {
                             <span class="badge badge-danger">@ViewBag.error</span>
@@ -24,7 +24,7 @@
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.Password)
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Hasło" })
                         @if (ViewBag.error != null && ViewBag.error[ViewBag.error.Length - 1] == '!')
                         {
                             <span class="badge badge-danger">@ViewBag.error</span>

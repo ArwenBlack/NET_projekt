@@ -26,5 +26,5 @@ def generate(time: int, rate: int):
     return data
 
 
-data = generate(6500, 10)
-data.to_csv(r'ecg_emg_10Hz_2h.csv')
+data = generate(10, 100)
+data.to_csv(r'ecg_emg_10Hz_rand.dat')

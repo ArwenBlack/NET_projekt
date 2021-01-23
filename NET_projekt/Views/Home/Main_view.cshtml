@@ -25,7 +25,7 @@
                 </div>
             }
 
-            @using (Html.BeginForm("User_plot", "Home", FormMethod.Post, new { enctype = "multipart/form-data"}))
+            @using (Html.BeginForm("User_plot", "ExamplePlot", FormMethod.Post, new { enctype = "multipart/form-data"}))
             {
 
                 if (ViewBag.Message_ok == "1")
@@ -57,7 +57,7 @@
         
         <div class="col-4">
 
-            @using (Html.BeginForm("Example_plot", "Home", new { id = "FilterClick" }, FormMethod.Post, null))
+            @using (Html.BeginForm("Example_plot", "ExamplePlot", new { id = "FilterClick" }, FormMethod.Post, null))
             {
                 <div class="fs-3">
                     Wirtualizacja przykładowych danych

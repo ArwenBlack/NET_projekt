@@ -8,7 +8,7 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <link href="~/Content/Site.css" rel="stylesheet" />
 
-@using (Html.BeginForm("AddDataset", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("AddDataset", "Dataset", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -54,7 +54,7 @@
         </div>
         <div class="form-group" , style="margin-top:20px;">
             <input type="submit" class="btn btn-success" value="Dodaj dataset" /> |
-            @Html.ActionLink("Powrót", "Index")
+            @Html.ActionLink("Powrót", "Index", "User")
         </div>
 
     </div>

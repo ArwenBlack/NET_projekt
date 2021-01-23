@@ -14,7 +14,7 @@
                 {
                     <p>Nazwa: @Session["Nickname"].ToString()</p>
                     <p>E-mail: @Session["EmailAddress"].ToString()</p>
-                    <a href="@Url.Action("Logout","Home")" class="btn btn-dark">Wyloguj się</a>
+                    <a href="@Url.Action("Logout","User")" class="btn btn-dark">Wyloguj się</a>
                 }
             </div>
         </div>
@@ -52,15 +52,15 @@
                         }</td>
                     <td>@Html.DisplayFor(modelItem => (Model.Datasets.ElementAt(i).DatasetHzFrequency))</td>
                     <td class="text-center">
-                        <input type="button" value="Przejrzyj" class="btn btn-success" onclick="location.href='@Url.Action("Graph", "Home", new { id = Model.Datasets.ElementAt(i).Id })'" />
-                        <input type="button" value="Usuń" class="btn btn-danger" onclick="location.href='@Url.Action("DeleteDataset", "Home", new { id = Model.Datasets.ElementAt(i).Id })'" />
+                        <input type="button" value="Przejrzyj" class="btn btn-success" onclick="location.href='@Url.Action("Graph", "Dataset", new { id = Model.Datasets.ElementAt(i).Id })'" />
+                        <input type="button" value="Usuń" class="btn btn-danger" onclick="location.href='@Url.Action("DeleteDataset", "Dataset", new { id = Model.Datasets.ElementAt(i).Id })'" />
                     </td>
                 </tr>
             }
         }
     <tr>
         <td colspan="5"></td>
-        <td class="text-center"><input type="button" value="Dodaj nowy" class="btn btn-primary" onclick="location.href='@Url.Action("AddDataset", "Home", new { UserId = Model.UserId  })'"/></td>
+        <td class="text-center"><input type="button" value="Dodaj nowy" class="btn btn-primary" onclick="location.href='@Url.Action("AddDataset", "Dataset", new { UserId = Model.UserId  })'"/></td>
     </tr>
     </tbody>
 </table>

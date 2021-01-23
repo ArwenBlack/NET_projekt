@@ -38,7 +38,10 @@
             @Html.LabelFor(m => m.DatasetColumnsInfo)
             <div>
                 @Html.EditorFor(m => m.DatasetColumnsInfo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(m => m.DatasetColumnsInfo, "", new { @class = "text-danger" })
+                @if (ViewBag.dataseterror != null)
+                {
+                    <span class="badge badge-danger">@ViewBag.dataseterror</span>
+                }
             </div>
         </div>
 

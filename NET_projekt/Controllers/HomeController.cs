@@ -66,8 +66,8 @@ namespace NET_projekt.Controllers
                 Lines.Add(s);
             }
             ViewBag.DataLines = JsonConvert.SerializeObject(Lines); //Wstawia linie do vievbaga by łatwo je uzyskać w widoku
-
             GraphModel Gm = new GraphModel { Dataset = Dts, Time = time };
+            Sr.Close();
             return View(Gm);
         }
         //HTTP: GET------------------------------------------------------------------
@@ -85,13 +85,47 @@ namespace NET_projekt.Controllers
         {
             if (ModelState.IsValid) //Model-binding validation - odwołuje się do adnotacji w Modelach
             {
+                { //poprawność DatasetColumnsInfo
+                    string[] lines = DatasetColumnsInfo.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    DatasetColumnsInfo = "";
+                    foreach (string line in lines)
+                    {
+                        string[] name_numbers = line.Split(new char[] { ':' });
+                        if (name_numbers.Length != 2 || name_numbers[0].Length == 0)
+                        {
+                            ViewBag.dataseterror = "Przykładowa prawidłowa postać: ECG:1,2,3 EMG:4,5 AAA:6";
+                            return View();
+                        }
+                        string[] potentialdigits = name_numbers[1].Split(new char[] { ',' });
+                        foreach (var potentialdigit in potentialdigits)
+                        {
+                            if (potentialdigit.Length == 0)
+                            {
+                                ViewBag.dataseterror = "Przykładowa prawidłowa postać: ECG:1,2,3 EMG:4,5 AAA:6";
+                                return View();
+                            }
+                            int number;
+                            bool success = Int32.TryParse(potentialdigit, out number);
+                            if (!success)
+                            {
+                                ViewBag.dataseterror = "Przykładowa prawidłowa postać: ECG:1,2,3 EMG:4,5 AAA:6";
+                                return View();
+                            }
+                        }
+                        DatasetColumnsInfo += line + " ";
+                    }
+                    DatasetColumnsInfo = DatasetColumnsInfo.Substring(0, DatasetColumnsInfo.Length - 1);
+                }
                 if (file != null && file.ContentLength > 0)
                 {
                     string extension = Path.GetExtension(file.FileName);
                     if (extension == ".csv")
                     {
                         ViewBag.Message = "Wybrano odpowiedni plik";
-                        string path = Path.Combine(Server.MapPath("~"), Path.GetFileName(file.FileName));
+                        //string path = Path.Combine(Server.MapPath("~"), Path.GetFileName(file.FileName));
+                        string path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Path.GetDirectoryName
+                            (AppDomain.CurrentDomain.BaseDirectory)), @"Dane\\" + DatasetName + Session["Nickname"].ToString() + ".csv");
+                        file.SaveAs(path);
                         Dataset NewDataSet = new Dataset();
                         NewDataSet.DatasetName = DatasetName;
                         NewDataSet.DatasetColumnsInfo = DatasetColumnsInfo;
@@ -124,6 +158,14 @@ namespace NET_projekt.Controllers
         public ActionResult DeleteDataset(int Id)
         {
             Dataset Dts = db.Datasets.Find(Id);
+            //Usuwanie z folderu
+            string path = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName
+                (AppDomain.CurrentDomain.BaseDirectory)), @"Dane\\" + Dts.DatasetName + Session["Nickname"].ToString() + ".csv");
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+            //Usuwanie z DB
             db.Datasets.Remove(Dts);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -131,6 +173,10 @@ namespace NET_projekt.Controllers
         //HTTP: GET------------------------------------------------------------------
         public ActionResult Register()
         {
+            if (Session["UserId"] != null)
+            {
+                return RedirectToAction("Index");
+            }
             return View(new User());
         }
 
@@ -164,12 +210,16 @@ namespace NET_projekt.Controllers
                     return View(new User());
                 }
             }
-            return View(new User());
+            return View();
         }
 
         //HTTP: GET------------------------------------------------------------------
         public ActionResult Login()
         {
+            if (Session["UserId"] != null)
+            {
+                return RedirectToAction("Index");
+            }
             return View(new User());
         }
 
@@ -197,14 +247,14 @@ namespace NET_projekt.Controllers
                     }
                     else
                     {
-                        ViewBag.error = "Podano nieprawidłowe hasło!";
+                        ViewBag.error = "Podano nieprawidłowy login lub hasło";
                         //return RedirectToAction("Login");
                         return View(new User());
                     }
                 }
                 else
                 {
-                    ViewBag.error = "Użytkownik o podanej nazwie nie istnieje.";
+                    ViewBag.error = "Podano nieprawidłowy login lub hasło";
                     //return RedirectToAction("Login");
                     return View(new User());
                 }

@@ -8,38 +8,33 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    
 </head>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Wirtualizacja danych ECG i EMG</a>
+        <a class="navbar-brand" href="#">Wizualizacja danych biometrycznych</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="Main_view">Strona główna</a>
+                    @Html.ActionLink("Strona główna", "Main_view", "Home", new { @class = "nav - link active", @style = "color: black; margin-right:20px;" })
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="Login">Logowanie</a>
-
-
+                    @Html.ActionLink("Logowanie", "Login", "Home", new { @class = "nav - link active", @style = "color: gray; margin-right:20px;" })
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="Register">Rejestracja</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">O aplikacji</a>
+                    @Html.ActionLink("Rejestracja", "Register", "Home", new { @class = "nav - link active", @style = "color: gray; margin-right:20px;" })
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
 <body>
     <div class="container body-content">
         @RenderBody()
-        
     </div>
 
     @Scripts.Render("~/bundles/jquery")

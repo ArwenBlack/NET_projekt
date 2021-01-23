@@ -11,7 +11,7 @@
                 <div class="card-title">Logowanie</div>
             </div>
             <div class="card-body">
-                @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+                @using (Html.BeginForm("Login", "User", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
                 <div class="form-group">
@@ -30,7 +30,7 @@
                         <input type="submit" name="submit" class="btn btn-primary" value="Login" />
                     </div>
                 }
-                @Html.ActionLink("Nie masz konta? Zarejestruj się.", "Register")
+                @Html.ActionLink("Nie masz konta? Zarejestruj się.", "Register", "User")
             </div>
         </div>
     </div>

@@ -167,7 +167,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DatasetController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\ExamplePlotController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -213,15 +216,15 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\User\Register.cshtml" />
     <Content Include="Views\Home\Main_view.cshtml" />
-    <Content Include="Views\Home\Example_plot.cshtml" />
-    <Content Include="Views\Home\Graph.cshtml" />
-    <Content Include="Views\Home\User_plot.cshtml" />
-    <Content Include="Views\Home\AddDataset.cshtml" />
-    <Content Include="Views\Home\DeleteDataset.cshtml" />
+    <Content Include="Views\ExamplePlot\Example_plot.cshtml" />
+    <Content Include="Views\Dataset\Graph.cshtml" />
+    <Content Include="Views\ExamplePlot\User_plot.cshtml" />
+    <Content Include="Views\Dataset\AddDataset.cshtml" />
+    <Content Include="Views\Dataset\DeleteDataset.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

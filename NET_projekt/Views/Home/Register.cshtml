@@ -4,17 +4,21 @@
     ViewBag.Title = "Register";
 }
 
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+
 <div class="row justify-content-md-center">
     <div class="col-md-5">
-        @using (Html.BeginForm("Register", "Home", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">Rejestracja</div>
-                </div>
-                <div class="card-body">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Rejestracja</div>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("Register", "Home", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
                     <div class="form-group">
                         @Html.LabelFor(m => m.Nickname)
                         @Html.TextBoxFor(m => m.Nickname, "", new { @class = "form-control", @placeholder = "Nazwa użytkownika" })
@@ -37,8 +41,8 @@
                     <div class="form-group">
                         <input type="submit" name="submit" class="btn btn-danger" value="Rejestracja" />
                     </div>
-                </div>
+                }
             </div>
-        }
+        </div>
     </div>
 </div>

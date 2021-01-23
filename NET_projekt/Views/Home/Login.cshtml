@@ -14,22 +14,18 @@
                 @using (Html.BeginForm("Login", "Home", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Nickname)
-                        @Html.TextBoxFor(m => m.Nickname, "", new { @class = "form-control", @placeholder = "Nazwa użytkownika"})
-                        @if (ViewBag.error != null && ViewBag.error[ViewBag.error.Length - 1] == '.')
-                        {
-                            <span class="badge badge-danger">@ViewBag.error</span>
-                        }
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(m => m.Password)
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Hasło" })
-                        @if (ViewBag.error != null && ViewBag.error[ViewBag.error.Length - 1] == '!')
-                        {
-                            <span class="badge badge-danger">@ViewBag.error</span>
-                        }
-                    </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Nickname)
+                    @Html.TextBoxFor(m => m.Nickname, "", new { @class = "form-control", @placeholder = "Nazwa użytkownika" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Hasło" })
+                    @if (ViewBag.error != null)
+                    {
+                        <span class="badge badge-danger">@ViewBag.error</span>
+                    }
+                </div>
                     <div class="form-group">
                         <input type="submit" name="submit" class="btn btn-primary" value="Login" />
                     </div>
